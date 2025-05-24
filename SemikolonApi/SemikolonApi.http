@@ -1,0 +1,6 @@
+@SemikolonApi_HostAddress = http://localhost:5090
+
+GET {{SemikolonApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
