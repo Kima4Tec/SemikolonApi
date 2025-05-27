@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace Application.Dtos
 {
-    public class CoverDto
+    public class CreateCoverDto
     {
         public string DesignIdeas { get; set; } = string.Empty;
         public bool DigitalOnly { get; set; }
+        public int Book { get; set; }
         public List<CreateArtistDto> Artists { get; set; } = new();
     }
 }

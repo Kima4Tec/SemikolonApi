@@ -1,8 +1,21 @@
-using Microsoft.EntityFrameworkCore;
-using Application.Interfaces;
-using Infrastructure.Repositories;
-using Infrastructure.Data;
+using Application.Dtos;
+using Application.Interfaces.IArtists;
+using Application.Interfaces.IAuthor;
+using Application.Interfaces.IBook;
+using Application.Interfaces.IUser;
+using Application.Mappings;
 using Application.Services;
+using Application.Validation;
+using FluentValidation;
+using Infrastructure.Data;
+using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using static Infrastructure.Repositories.IRepository;
+
+
 namespace SemikolonApi
 {
     public class Program
@@ -18,11 +31,36 @@ namespace SemikolonApi
 
             // Adding controller services
             builder.Services.AddControllers();
+            builder.Services.AddScoped<AuthService>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IBookRepository, BookRepository>();
-            builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+            builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped<IAuthorService, AuthorService>();
-            builder.Services.AddDbContext<ApplicationDbContext>(options => 
+            builder.Services.AddScoped<IArtistService, ArtistService>();
+            builder.Services.AddScoped<IBookService, BookService>();
+            builder.Services.AddScoped<IValidator<CreateAuthorDto>, AuthorDtoValidator>();
+            builder.Services.AddScoped<BookDtoValidator>();
+            builder.Services.AddAutoMapper(typeof(AuthorProfile).Assembly);
+            builder.Services.AddAutoMapper(typeof(ArtistProfile).Assembly);
+            builder.Services.AddAutoMapper(typeof(BookProfile).Assembly);
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection")));
+
+            //adding JWT
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+           .AddJwtBearer(options =>
+           {
+               options.TokenValidationParameters = new TokenValidationParameters
+               {
+                   ValidateIssuer = true,
+                   ValidateAudience = true,
+                   ValidateLifetime = true,
+                   ValidateIssuerSigningKey = true,
+                   ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                   ValidAudience = builder.Configuration["Jwt:Audience"],
+                   IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]))
+               };
+           });
 
             //Adding CORS - Cross-Origin Resource Sharing. Allow all origins, methods and headers for communicating with application
             builder.Services.AddCors(options =>

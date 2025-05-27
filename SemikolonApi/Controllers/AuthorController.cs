@@ -1,5 +1,5 @@
 ﻿using Application.Dtos;
-using Application.Interfaces;
+using Application.Interfaces.IAuthor;
 using Domain.Entities;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
@@ -17,27 +17,40 @@ namespace SemikolonApi.Controllers
             _authorService = authorService;
         }
 
-
         /// <summary>
         /// Retrieves a list of all authors from the repository.
         /// </summary>
-        /// <returns>
-        /// An <see cref="ActionResult"/> containing a list of authors.
-        /// </returns>
         [HttpGet]
         public async Task<ActionResult<List<Author>>> GetAllAuthorsAsync()
         {
-            var authorsList = await _authorService.GetAllAuthors();
+            var authorsList = await _authorService.GetAllAuthorsAsync();
             return Ok(authorsList);
         }
 
         /// <summary>
-        /// Creates a new author based on the provided. Using FluentValidation and errorhandling in frontend to produce output on error.
+        /// Gets an author by ID.
         /// </summary>
-        /// <param name="authorDto">The data transfer object containing author details.</param>
-        /// <returns>The newly created <see cref="Author"/> wrapped in an <see cref="ActionResult"/>.</returns>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Author>> GetAuthorById(int id)
+        {
+            try
+            {
+                var author = await _authorService.GetAuthorByIdAsync(id);
+                return Ok(author);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
+        /// <summary>
+        /// Creates a new author.
+        /// </summary>
         [HttpPost]
-        public async Task<ActionResult<Author>> CreateAuthor(AuthorDto authorDto)
+        public async Task<ActionResult<Author>> CreateAuthor([FromBody] CreateAuthorDto authorDto)
         {
             try
             {
@@ -46,19 +59,58 @@ namespace SemikolonApi.Controllers
             }
             catch (ValidationException ex)
             {
-                return BadRequest(new
-                {
-                    errors = ex.Errors
-                        .GroupBy(e => e.PropertyName)
-                        .ToDictionary(
-                            g => g.Key,
-                            g => g.Select(e => e.ErrorMessage).ToArray()
-                        )
-                });
+                var errorMessages = ex.Errors
+                    .GroupBy(e => e.PropertyName)
+                    .ToDictionary(
+                        g => g.Key,
+                        g => g.Select(e => e.ErrorMessage).ToList()
+                    );
+                return BadRequest(new { errors = errorMessages });
+            }
+        }
+
+        /// <summary>
+        /// Updates an existing author.
+        /// </summary>
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateAuthor(int id, [FromBody] AuthorDto authorDto)
+        {
+            if (id != authorDto.Id)
+                return BadRequest("ID in path does not match ID in body.");
+
+            try
+            {
+                await _authorService.UpdateAuthorAsync(id, authorDto);
+                return NoContent();
+            }
+            catch (ValidationException ex)
+            {
+                var errorMessages = ex.Errors
+                    .GroupBy(e => e.PropertyName)
+                    .ToDictionary(
+                        g => g.Key,
+                        g => g.Select(e => e.ErrorMessage).ToList()
+                    );
+                return BadRequest(new { errors = errorMessages });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
         }
 
 
 
+        /// <summary>
+        /// Deletes an author by ID.
+        /// </summary>
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteAuthor(int id)
+        {
+            var deleted = await _authorService.DeleteAuthorAsync(id);
+            if (!deleted)
+                return NotFound();
+            return NoContent();
+        }
     }
 }

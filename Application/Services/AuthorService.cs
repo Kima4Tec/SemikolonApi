@@ -1,38 +1,61 @@
 ﻿using Application.Dtos;
-using Application.Interfaces;
-using Application.Validation;
+using Application.Interfaces.IAuthor;
+using AutoMapper;
 using Domain.Entities;
 using FluentValidation;
+using static Infrastructure.Repositories.IRepository;
 
-namespace Application.Services
+public class AuthorService : IAuthorService
 {
-    public class AuthorService : IAuthorService
+    private readonly IRepository<Author> _repository;
+    private readonly IValidator<CreateAuthorDto> _authorValidator;
+    private readonly IMapper _mapper;
+
+    public AuthorService(IRepository<Author> repository,IValidator<CreateAuthorDto> authorValidator,IMapper mapper)
     {
-        private readonly IAuthorRepository _authorRepository;
-        public AuthorService(IAuthorRepository authorRepository)
+        _repository = repository;
+        _authorValidator = authorValidator;
+        _mapper = mapper;
+    }
+
+    public async Task<List<Author>> GetAllAuthorsAsync()
+    {
+        return await _repository.GetAllAsync();
+    }
+    public async Task<Author> GetAuthorByIdAsync(int id)
+    {
+        return await _repository.GetByIdAsync(id);
+    }
+    public async Task<Author> CreateAuthorAsync(CreateAuthorDto authorDto)
+    {
+        var validationResult = await _authorValidator.ValidateAsync(authorDto);
+        if (!validationResult.IsValid)
         {
-            _authorRepository = authorRepository;
+            throw new ValidationException(validationResult.Errors);
         }
 
-        public async Task<List<Author>> GetAllAuthors()
-        {
-            // Add logging and validation here  
-            var authors = await _authorRepository.GetAllAuthors();
+        var author = _mapper.Map<Author>(authorDto);
+        return await _repository.AddAsync(author);
+    }
+    public async Task<Author> UpdateAuthorAsync(int id, AuthorDto authorDto)
+    {
+        var existingAuthor = await _repository.GetByIdAsync(id);
+        if (existingAuthor == null)
+            throw new KeyNotFoundException($"Author with ID {id} not found.");
 
-            return authors;
-        }
+        existingAuthor.FirstName = authorDto.FirstName;
+        existingAuthor.LastName = authorDto.LastName;
 
-        public async Task<Author> CreateAuthorAsync(AuthorDto authorDto)
-        {
-            var validator = new AuthorDtoValidator();
-            var result = validator.Validate(authorDto);
-            if (!result.IsValid)
-            {
-                throw new ValidationException(result.Errors);
-            }
+        return await _repository.UpdateAsync(existingAuthor);
+    }
 
-            // Add logging and validation here  
-            return await _authorRepository.CreateAuthorAsync(authorDto);
-        }
+    public async Task<bool> DeleteAuthorAsync(int id)
+    {
+        var author = await _repository.GetByIdAsync(id);
+        if (author == null) return false;
+
+        await _repository.DeleteAsync(author);
+        return true;
     }
 }
+

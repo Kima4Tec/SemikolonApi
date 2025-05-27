@@ -2,17 +2,15 @@
 
 namespace Application.Dtos
 {
-    public class BookDto
+    public class CreateBookDto
     {
         public int BookId { get; set; }
         public string Title { get; set; } = string.Empty;
-        /// <summary>
-        /// Validation for PublishYear using dataannotation
-        /// </summary>
         [Required]
-        [Range(1000, 9999, ErrorMessage = "Year must be a 4-digit number.")]
+        [Range(1000, 9999, ErrorMessage = "Årstallet skal indeholde 4 cifre.")]
         public int PublishYear { get; set; }
         public double BasePrice { get; set; }
-        public int? AuthorId { get; set; }
+        public int AuthorId { get; set; }
+
     }
 }

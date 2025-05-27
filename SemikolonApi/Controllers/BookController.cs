@@ -1,4 +1,6 @@
-﻿using Application.Interfaces;
+﻿using Application.Dtos;
+using Application.Interfaces.IBook;
+using Application.Validation;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,22 +10,22 @@ namespace SemikolonApi.Controllers
     [ApiController]
     public class BookController : ControllerBase
     {
-        private readonly IBookRepository _bookRepository;
+        private readonly IBookService _bookService;
+        private readonly BookDtoValidator _bookDtoValidator;
 
-        public BookController(IBookRepository bookRepository)
+        public BookController(IBookService bookService, BookDtoValidator bookDtoValidator)
         {
-            _bookRepository = bookRepository;
+            _bookService = bookService;
+            _bookDtoValidator = bookDtoValidator;
         }
 
-        /// <summary>
-        /// Retrieves a list of all books.
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public async Task<IActionResult> GetAllBooks()
+        [HttpPost]
+        public async Task<ActionResult<Book>> CreateBook([FromBody] CreateBookDto bookDto)
         {
-            var books = await _bookRepository.GetAllBooks();
-            return Ok(books);
+
+            var createdBook = await _bookService.CreateBookAsync(bookDto);
+            return Ok(createdBook);
         }
+
     }
 }
