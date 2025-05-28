@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Domain.Entities
@@ -38,6 +39,7 @@ namespace Domain.Entities
         /// This is a foreign key linking the book to its author.
         /// </summary>
         public int AuthorId { get; set; }
+        public Author Author { get; set; }
 
     }
 }

@@ -24,7 +24,7 @@ namespace SemikolonApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Book>>> GetAllBooks()
+        public async Task<ActionResult<List<BookDto>>> GetAllBooks()
         {
             var books = await _bookService.GetAllBooksAsync();
             return Ok(books);
@@ -42,6 +42,16 @@ namespace SemikolonApi.Controllers
             {
                 return NotFound();
             }
+        }
+
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<BookDto>>> SearchBooks([FromQuery] string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+                return BadRequest("Søgning kan ikke være tom.");
+
+            var books = await _bookService.SearchBooksAsync(query);
+            return Ok(books);
         }
 
         [HttpGet("books-without-cover")]

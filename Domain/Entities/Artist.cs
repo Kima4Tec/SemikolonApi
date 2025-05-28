@@ -22,7 +22,6 @@ namespace Domain.Entities
         /// <summary>
         /// List of covers by artist
         /// </summary>
-        [JsonIgnore]
         public List<Cover> Covers { get; set; } = new List<Cover>();
     }
 }

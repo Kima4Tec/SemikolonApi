@@ -8,7 +8,9 @@ namespace Application.Interfaces.IBook
     /// </summary>
     public interface IBookRepository : IRepository<Book>
     {
+        Task<List<Book>> GetAllAsync();
         Task<List<Book>> GetAllBooksWithoutCoverAsync();
+        Task<List<Book>> SearchBookAsync(string query);
     }
 
 }

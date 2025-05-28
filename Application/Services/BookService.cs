@@ -46,9 +46,10 @@ namespace Application.Services
             return true;
         }
 
-        public async Task<List<Book>> GetAllBooksAsync()
+        public async Task<List<BookDto>> GetAllBooksAsync()
         {
-            return await _repository.GetAllAsync();
+            var books = await _bookRepository.GetAllAsync();
+            return _mapper.Map<List<BookDto>>(books);
         }
         public async Task<List<Book>> GetBooksWithoutCoverAsync()
         {
@@ -58,6 +59,12 @@ namespace Application.Services
         public async Task<Book> GetBookByIdAsync(int id)
         {
             return await _repository.GetByIdAsync(id);
+        }
+
+        public async Task<List<BookDto>> SearchBooksAsync(string query)
+        {
+            var books = await _bookRepository.SearchBookAsync(query);
+            return _mapper.Map<List<BookDto>>(books);
         }
 
         public async Task<Book> UpdateBookAsync(int id, BookDto bookDto)
@@ -73,5 +80,11 @@ namespace Application.Services
             return book;
         }
 
+        public async Task<List<Book>> SearchBookAsync(string query)
+        {
+            var book = await _bookRepository.SearchBookAsync(query);
+            return book ?? new List<Book>(); //hvis null så ny liste eller skal der noget mapper på
+
+        }
     }
 }

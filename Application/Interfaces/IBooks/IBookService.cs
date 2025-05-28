@@ -13,9 +13,10 @@ namespace Application.Interfaces.IBook
     /// </summary>
     public interface IBookService
     {
-        Task<List<Book>> GetAllBooksAsync();
+        Task<List<BookDto>> GetAllBooksAsync();
         Task<Book> GetBookByIdAsync(int id);
         Task<List<Book>> GetBooksWithoutCoverAsync();
+        Task<List<BookDto>> SearchBooksAsync(string query);
         Task<Book> CreateBookAsync(CreateBookDto bookDto);
         Task<Book> UpdateBookAsync(int id, BookDto bookDto);
         Task<bool> DeleteBookAsync(int id);
