@@ -8,10 +8,15 @@ namespace SemikolonApi
     {
         public BookProfile()
         {
+            CreateMap<Book, BookDto>()
+                .ForMember(dest => dest.PublishDate, opt => opt.MapFrom(src => src.PublishDate.Year));
+
             CreateMap<CreateBookDto, Book>()
-                .ForMember(dest => dest.PublishDate, opt => opt.MapFrom(src => new DateOnly(src.PublishYear, 1, 1)))
-                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.BasePrice))
-                .ForMember(dest => dest.Cover, opt => opt.Ignore());
+                .ForMember(dest => dest.PublishDate, opt => opt.MapFrom(src => DateOnly.FromDateTime(new DateTime(src.PublishDate, 1, 1))));
+
+
+
+
         }
     }
 }

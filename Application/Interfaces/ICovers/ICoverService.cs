@@ -10,10 +10,10 @@ namespace Application.Interfaces.ICovers
 {
     public interface ICoverService
     {
-        Task<List<Author>> GetAllBooksAsync();
-        Task<Author> GetBookByIdAsync(int id);
-        Task<Author> CreateBookAsync(CreateCoverDto coverDto);
-        Task<Author> UpdateBookAsync(int id, CoverDto coverDto);
-        Task<bool> DeleteBookAsync(int id);
+        Task<List<Cover>> GetAllCoversAsync();
+        Task<Cover> GetCoverByIdAsync(int id);
+        Task<Cover> CreateCoverAsync(CreateCoverDto dto);
+        Task<Cover> UpdateCoverAsync(int id, CoverDto dto);
+        Task<bool> DeleteCoverAsync(int id);
     }
 }

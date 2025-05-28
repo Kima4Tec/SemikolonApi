@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace Domain.Entities
 {
     /// <summary>
     /// Represents a Cover Artist
@@ -20,6 +22,7 @@
         /// <summary>
         /// List of covers by artist
         /// </summary>
+        [JsonIgnore]
         public List<Cover> Covers { get; set; } = new List<Cover>();
     }
 }

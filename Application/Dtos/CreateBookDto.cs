@@ -8,8 +8,8 @@ namespace Application.Dtos
         public string Title { get; set; } = string.Empty;
         [Required]
         [Range(1000, 9999, ErrorMessage = "Årstallet skal indeholde 4 cifre.")]
-        public int PublishYear { get; set; }
-        public double BasePrice { get; set; }
+        public int PublishDate { get; set; }
+        public double Price { get; set; }
         public int AuthorId { get; set; }
 
     }

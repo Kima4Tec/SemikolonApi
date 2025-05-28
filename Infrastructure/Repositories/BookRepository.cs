@@ -1,22 +1,24 @@
-﻿using Application.Interfaces.IBook;
-using Infrastructure.Data;
+﻿using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+using Domain.Entities;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Application.Interfaces.IBook;
 
-namespace Infrastructure.Repositories
+public class BookRepository : Repository<Book>, IBookRepository
 {
-    /// <summary>
-    /// Repository for managing Book entities.
-    /// </summary>
-    public class BookRepository : IBookRepository
-    {
-        private readonly ApplicationDbContext _context;
+    private readonly ApplicationDbContext _context;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BookRepository"/> class.
-        /// </summary>
-        /// <param name="context">The database context to be used by the repository.</param>
-        public BookRepository(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+    public BookRepository(ApplicationDbContext context) : base(context)
+    {
+        _context = context;
+    }
+
+    public async Task<List<Book>> GetAllBooksWithoutCoverAsync()
+    {
+        // Get all books where the Cover property is null because one book can only have one cover.
+        return await _context.Books
+            .Where(b => b.Cover == null)
+            .ToListAsync();
     }
 }

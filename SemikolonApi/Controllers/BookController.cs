@@ -1,8 +1,10 @@
 ﻿using Application.Dtos;
+using Application.Interfaces.IArtists;
 using Application.Interfaces.IBook;
 using Application.Validation;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
 
 namespace SemikolonApi.Controllers
 {
@@ -12,11 +14,42 @@ namespace SemikolonApi.Controllers
     {
         private readonly IBookService _bookService;
         private readonly BookDtoValidator _bookDtoValidator;
+        private readonly IMapper _mapper;
 
-        public BookController(IBookService bookService, BookDtoValidator bookDtoValidator)
+        public BookController(IBookService bookService, BookDtoValidator bookDtoValidator, IMapper mapper)
         {
             _bookService = bookService;
             _bookDtoValidator = bookDtoValidator;
+            _mapper = mapper;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<Book>>> GetAllBooks()
+        {
+            var books = await _bookService.GetAllBooksAsync();
+            return Ok(books);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Book>> GetArtistById(int bookid)
+        {
+            try
+            {
+                var book = await _bookService.GetBookByIdAsync(bookid);
+                return Ok(book);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpGet("books-without-cover")]
+        public async Task<ActionResult<List<BookDto>>> GetBooksWithoutCover()
+        {
+            var books = await _bookService.GetBooksWithoutCoverAsync();
+            var bookDtos = _mapper.Map<List<BookDto>>(books);
+            return Ok(bookDtos);
         }
 
         [HttpPost]

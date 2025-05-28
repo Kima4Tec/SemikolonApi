@@ -2,6 +2,7 @@ using Application.Dtos;
 using Application.Interfaces.IArtists;
 using Application.Interfaces.IAuthor;
 using Application.Interfaces.IBook;
+using Application.Interfaces.ICovers;
 using Application.Interfaces.IUser;
 using Application.Mappings;
 using Application.Services;
@@ -38,6 +39,9 @@ namespace SemikolonApi
             builder.Services.AddScoped<IAuthorService, AuthorService>();
             builder.Services.AddScoped<IArtistService, ArtistService>();
             builder.Services.AddScoped<IBookService, BookService>();
+            builder.Services.AddScoped<ICoverService, CoverService>();
+            builder.Services.AddScoped<ICoverRepository, CoverRepository>();
+            builder.Services.AddScoped<ICoverService, CoverService>();
             builder.Services.AddScoped<IValidator<CreateAuthorDto>, AuthorDtoValidator>();
             builder.Services.AddScoped<BookDtoValidator>();
             builder.Services.AddAutoMapper(typeof(AuthorProfile).Assembly);

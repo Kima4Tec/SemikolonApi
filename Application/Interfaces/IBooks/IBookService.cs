@@ -15,6 +15,7 @@ namespace Application.Interfaces.IBook
     {
         Task<List<Book>> GetAllBooksAsync();
         Task<Book> GetBookByIdAsync(int id);
+        Task<List<Book>> GetBooksWithoutCoverAsync();
         Task<Book> CreateBookAsync(CreateBookDto bookDto);
         Task<Book> UpdateBookAsync(int id, BookDto bookDto);
         Task<bool> DeleteBookAsync(int id);

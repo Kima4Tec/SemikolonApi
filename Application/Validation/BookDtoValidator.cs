@@ -9,10 +9,10 @@ public class BookDtoValidator
         if (string.IsNullOrWhiteSpace(bookDto.Title))
             errors.Add("Title is required.");
 
-        if (bookDto.PublishYear < 1500 || bookDto.PublishYear > DateTime.Now.Year)
+        if (bookDto.PublishDate < 1500 || bookDto.PublishDate > DateTime.Now.Year)
             errors.Add("PublishYear must be between 1500 and current year.");
 
-        if (bookDto.BasePrice < 0)
+        if (bookDto.Price < 0)
             errors.Add("BasePrice cannot be negative.");
 
         return errors.Count == 0;

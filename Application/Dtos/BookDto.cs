@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Domain.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace Application.Dtos
 {
@@ -6,13 +7,10 @@ namespace Application.Dtos
     {
         public int BookId { get; set; }
         public string Title { get; set; } = string.Empty;
-        /// <summary>
-        /// Validation for PublishYear using dataannotation
-        /// </summary>
-        [Required]
-        [Range(1000, 9999, ErrorMessage = "Year must be a 4-digit number.")]
-        public int PublishYear { get; set; }
-        public double BasePrice { get; set; }
+
+        public int PublishDate { get; set; }
+        public double Price { get; set; }
+        public Cover? Cover { get; set; }
         public int? AuthorId { get; set; }
     }
 }

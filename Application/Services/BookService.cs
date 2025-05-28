@@ -10,13 +10,14 @@ namespace Application.Services
     public class BookService : IBookService
     {
         private readonly IRepository<Book> _repository;
-        private readonly IValidator<CreateAuthorDto> _bookValidator;
         private readonly IMapper _mapper;
+        private readonly IBookRepository _bookRepository;
 
-        public BookService(IRepository<Book> repository, IMapper mapper)
+        public BookService(IRepository<Book> repository, IMapper mapper, IBookRepository bookRepository)
         {
             _repository = repository;
             _mapper = mapper;
+            _bookRepository = bookRepository;
         }
 
         public async Task<Book> CreateBookAsync(CreateBookDto bookDto)
@@ -48,6 +49,10 @@ namespace Application.Services
         public async Task<List<Book>> GetAllBooksAsync()
         {
             return await _repository.GetAllAsync();
+        }
+        public async Task<List<Book>> GetBooksWithoutCoverAsync()
+        {
+            return await _bookRepository.GetAllBooksWithoutCoverAsync();
         }
 
         public async Task<Book> GetBookByIdAsync(int id)
