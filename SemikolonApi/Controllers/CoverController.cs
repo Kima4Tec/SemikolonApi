@@ -1,5 +1,6 @@
 ﻿using Application.Dtos;
 using Application.Interfaces.ICovers;
+using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,6 +21,12 @@ namespace SemikolonApi.Controllers
         {
             var createdCover = await _coverService.CreateCoverAsync(coverDto);
             return Ok(createdCover);
+        }
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Cover>> UpdateCover(int id, [FromBody] CoverDto coverDto)
+        {
+            var updatedCover = await _coverService.UpdateCoverAsync(id, coverDto);
+            return Ok(updatedCover);
         }
 
     }

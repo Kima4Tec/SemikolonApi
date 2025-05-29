@@ -14,7 +14,7 @@ namespace Application.Interfaces.IBook
     public interface IBookService
     {
         Task<List<BookDto>> GetAllBooksAsync();
-        Task<Book> GetBookByIdAsync(int id);
+        Task<BookDto> GetBookByIdAsync(int id);
         Task<List<Book>> GetBooksWithoutCoverAsync();
         Task<List<BookDto>> SearchBooksAsync(string query);
         Task<Book> CreateBookAsync(CreateBookDto bookDto);

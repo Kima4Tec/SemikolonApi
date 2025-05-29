@@ -4,6 +4,7 @@ using AutoMapper;
 using Domain.Entities;
 using FluentValidation;
 using static Infrastructure.Repositories.IRepository;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace Application.Services
 {
@@ -56,9 +57,10 @@ namespace Application.Services
             return await _bookRepository.GetAllBooksWithoutCoverAsync();
         }
 
-        public async Task<Book> GetBookByIdAsync(int id)
+        public async Task<BookDto> GetBookByIdAsync(int id)
         {
-            return await _repository.GetByIdAsync(id);
+            var books = await _bookRepository.GetBookByIdAsync(id);
+            return _mapper.Map<BookDto>(books);
         }
 
         public async Task<List<BookDto>> SearchBooksAsync(string query)

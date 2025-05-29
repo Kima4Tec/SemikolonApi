@@ -23,6 +23,15 @@ public class BookRepository : Repository<Book>, IBookRepository
                              .ToListAsync();
     }
 
+    public async Task<Book> GetBookByIdAsync(int id)
+    {
+        return await _context.Books
+                             .Include(b => b.Author)
+                             .Include(b => b.Cover)
+                             .ThenInclude(c => c.Artists)
+                             .AsNoTracking()
+                             .FirstOrDefaultAsync(b => b.BookId == id);
+    }
 
     public async Task<List<Book>> GetAllBooksWithoutCoverAsync()
     {

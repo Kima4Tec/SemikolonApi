@@ -31,11 +31,11 @@ namespace SemikolonApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Book>> GetArtistById(int bookid)
+        public async Task<ActionResult<BookDto>> GetBookById(int id)
         {
             try
             {
-                var book = await _bookService.GetBookByIdAsync(bookid);
+                var book = await _bookService.GetBookByIdAsync(id);
                 return Ok(book);
             }
             catch (KeyNotFoundException)
@@ -43,6 +43,7 @@ namespace SemikolonApi.Controllers
                 return NotFound();
             }
         }
+
 
         [HttpGet("search")]
         public async Task<ActionResult<IEnumerable<BookDto>>> SearchBooks([FromQuery] string query)
@@ -68,6 +69,13 @@ namespace SemikolonApi.Controllers
 
             var createdBook = await _bookService.CreateBookAsync(bookDto);
             return Ok(createdBook);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Book>> UpdateBook(int id, [FromBody] BookDto bookDto)
+        {
+            var updatedBook = await _bookService.UpdateBookAsync(id, bookDto);
+            return Ok(updatedBook);
         }
 
     }

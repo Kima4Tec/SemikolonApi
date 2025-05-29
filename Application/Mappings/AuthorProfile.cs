@@ -8,9 +8,9 @@ namespace Application.Mappings
     {
         public AuthorProfile()
         {
-            CreateMap<CreateAuthorDto, Author>();
-                //.ForMember(dest => dest.Id, opt => opt.Ignore())
-                //.ForMember(dest => dest.Books, opt => opt.Ignore());
+            CreateMap<CreateAuthorDto, Author>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.Books, opt => opt.Ignore());
         }
     }
 }

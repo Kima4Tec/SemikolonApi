@@ -9,6 +9,7 @@ namespace Application.Interfaces.IBook
     public interface IBookRepository : IRepository<Book>
     {
         Task<List<Book>> GetAllAsync();
+        Task<Book> GetBookByIdAsync(int id);
         Task<List<Book>> GetAllBooksWithoutCoverAsync();
         Task<List<Book>> SearchBookAsync(string query);
     }

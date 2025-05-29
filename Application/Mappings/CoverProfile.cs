@@ -8,7 +8,8 @@ namespace SemikolonApi
     {
         public CoverProfile()
         {
-            CreateMap<CreateCoverDto, Cover>();
+            CreateMap<CoverDto, Cover>()
+                .ForMember(dest => dest.Artists, opt => opt.Ignore());
         }
     }
 }

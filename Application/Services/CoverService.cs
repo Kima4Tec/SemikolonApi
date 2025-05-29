@@ -58,9 +58,17 @@ public async Task<Cover> CreateCoverAsync(CreateCoverDto dto)
             throw new NotImplementedException();
         }
 
-        public Task<Cover> UpdateCoverAsync(int id, CoverDto dto)
+        public async Task<Cover> UpdateCoverAsync(int id, CoverDto dto)
         {
-            throw new NotImplementedException();
+            var cover = await _repository.GetByIdAsync(id);
+            if (cover == null)
+            {
+                throw new KeyNotFoundException($"Book with ID {id} not found.");
+            }
+
+            _mapper.Map(dto, cover);
+            await _repository.UpdateAsync(cover);
+            return cover;
         }
     }
 }
