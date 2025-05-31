@@ -10,6 +10,9 @@ namespace SemikolonApi
         {
             CreateMap<CoverDto, Cover>()
                 .ForMember(dest => dest.Artists, opt => opt.Ignore());
-        }
+            CreateMap<CreateCoverDto, Cover>()
+    .ForMember(dest => dest.Artists, opt => opt.Ignore());
+        
+    }
     }
 }
