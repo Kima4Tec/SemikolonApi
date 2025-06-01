@@ -48,16 +48,15 @@ public async Task<Cover> CreateCoverAsync(CreateCoverDto dto)
             throw new NotImplementedException();
         }
 
-        public Task<List<Cover>> GetAllCoversAsync()
-        {
-            throw new NotImplementedException();
+        public async Task<List<Cover>> GetAllCoversAsync()
+        {             
+            return await _repository.GetAllAsync();
         }
 
-        public Task<Cover> GetCoverByIdAsync(int id)
+        public async Task<Cover> GetCoverByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _repository.GetByIdAsync(id);
         }
-
         public async Task<Cover> UpdateCoverAsync(int id, CoverDto dto)
         {
             var cover = await _repository.GetByIdAsync(id);

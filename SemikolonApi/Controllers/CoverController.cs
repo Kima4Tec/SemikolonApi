@@ -16,7 +16,25 @@ namespace SemikolonApi.Controllers
             _coverService = coverService;
         }
 
-        [HttpPost]
+        [HttpGet]
+        public async Task<ActionResult<List<Cover>>> GetAllCoversAsync()
+        {
+            var coverList = await _coverService.GetAllCoversAsync();
+            return Ok(coverList);
+        }
+
+        [HttpGet("{id}")]
+            public async Task<ActionResult<Cover>> GetCoverById(int id)
+        {
+            var cover = await _coverService.GetCoverByIdAsync(id);
+            if (cover == null)
+            {
+                return NotFound();
+            }
+            return Ok(cover);
+    }
+
+    [HttpPost]
         public async Task<ActionResult> CreateCover([FromBody] CreateCoverDto coverDto)
         {
             var createdCover = await _coverService.CreateCoverAsync(coverDto);
