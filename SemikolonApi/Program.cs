@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Text.Json.Serialization;
 using static Infrastructure.Repositories.IRepository;
 
 
@@ -106,6 +107,11 @@ namespace SemikolonApi
                     s.IncludeXmlComments(xmlApplicationPath);
                 }
             });
+            builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    });
 
             var app = builder.Build();
             app.UseCors("AllowFrontend");

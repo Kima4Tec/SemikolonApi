@@ -78,5 +78,13 @@ namespace SemikolonApi.Controllers
             return Ok(updatedBook);
         }
 
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Book>> DeleteBookAsync(int id)
+        {
+            var deleted = await _bookService.DeleteBookAsync(id);
+            if (!deleted)
+                return NotFound();
+            return NoContent();
+        }
     }
 }

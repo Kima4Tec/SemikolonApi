@@ -43,9 +43,12 @@ public async Task<Cover> CreateCoverAsync(CreateCoverDto dto)
 }
 
 
-        public Task<bool> DeleteCoverAsync(int id)
+        public async Task<bool> DeleteCoverAsync(int id)
         {
-            throw new NotImplementedException();
+            var cover = await _repository.GetByIdAsync(id);
+            if (cover == null) return (false);
+            await _repository.DeleteAsync(cover);
+            return true;
         }
 
         public async Task<List<Cover>> GetAllCoversAsync()

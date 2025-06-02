@@ -1,4 +1,5 @@
 ﻿using Application.Dtos;
+using Application.Interfaces.IAuthor;
 using Application.Interfaces.ICovers;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
@@ -24,7 +25,7 @@ namespace SemikolonApi.Controllers
         }
 
         [HttpGet("{id}")]
-            public async Task<ActionResult<Cover>> GetCoverById(int id)
+        public async Task<ActionResult<Cover>> GetCoverById(int id)
         {
             var cover = await _coverService.GetCoverByIdAsync(id);
             if (cover == null)
@@ -32,9 +33,9 @@ namespace SemikolonApi.Controllers
                 return NotFound();
             }
             return Ok(cover);
-    }
+        }
 
-    [HttpPost]
+        [HttpPost]
         public async Task<ActionResult> CreateCover([FromBody] CreateCoverDto coverDto)
         {
             var createdCover = await _coverService.CreateCoverAsync(coverDto);
@@ -47,5 +48,13 @@ namespace SemikolonApi.Controllers
             return Ok(updatedCover);
         }
 
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Cover>> DeleteCover(int id)
+        {
+            var deleted = await _coverService.DeleteCoverAsync(id);
+            if (!deleted)
+                return NotFound();
+            return NoContent();
+        }
     }
 }
