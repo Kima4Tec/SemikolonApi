@@ -6,7 +6,6 @@ using Application.Dtos;
 using Domain.Entities;
 using Application.Interfaces.IBook;
 using FluentAssertions;
-using Infrastructure.Repositories;
 using static Infrastructure.Repositories.IRepository;
 
 namespace TestBogforlag
