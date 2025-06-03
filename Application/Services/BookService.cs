@@ -14,11 +14,20 @@ namespace Application.Services
         private readonly IMapper _mapper;
         private readonly IBookRepository _bookRepository;
 
+        public IRepository<Book> Object1 { get; }
+        public IMapper Object2 { get; }
+
         public BookService(IRepository<Book> repository, IMapper mapper, IBookRepository bookRepository)
         {
             _repository = repository;
             _mapper = mapper;
             _bookRepository = bookRepository;
+        }
+
+        public BookService(IRepository<Book> object1, IMapper object2)
+        {
+            Object1 = object1;
+            Object2 = object2;
         }
 
         public async Task<Book> CreateBookAsync(CreateBookDto bookDto)
