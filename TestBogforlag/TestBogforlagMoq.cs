@@ -259,7 +259,7 @@ namespace TestBogforlag
     /*------------------------------------------------------------------------*
      *                                                                        *
      *                              TEST 5                                    *
-     *     Unit test for validering af CreateArtistDto med dataannotations    *
+     *    Unit test for validation of CreateArtistDto with dataannotations    *
      * -----------------------------------------------------------------------*/
 
         [Fact]
