@@ -4,11 +4,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using Microsoft.AspNetCore.Authorization;
 
 namespace SemikolonApi.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("api/auth")]
     public class AuthController : ControllerBase
