@@ -1,12 +1,14 @@
 ﻿using Application.Dtos;
 using Application.Interfaces.IArtists;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace SemikolonApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ArtistController : ControllerBase
@@ -18,14 +20,14 @@ namespace SemikolonApi.Controllers
         {
             _artistService = artistService;
         }
-
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<List<Artist>>> GetAllArtistsAsync()
         {
             var artistList = await _artistService.GetAllArtistsAsync();
             return Ok(artistList);
         }
-
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<Artist>> GetArtistById(int id)
         {

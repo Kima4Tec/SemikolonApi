@@ -49,7 +49,7 @@ namespace SemikolonApi
             builder.Services.AddAutoMapper(typeof(ArtistProfile).Assembly);
             builder.Services.AddAutoMapper(typeof(BookProfile).Assembly);
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection")));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("ProdConnection")));
 
             //adding JWT
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

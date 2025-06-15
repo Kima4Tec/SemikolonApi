@@ -2,10 +2,12 @@
 using Application.Interfaces.IAuthor;
 using Domain.Entities;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace SemikolonApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AuthorController : ControllerBase
@@ -20,6 +22,7 @@ namespace SemikolonApi.Controllers
         /// <summary>
         /// Retrieves a list of all authors from the repository.
         /// </summary>
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<List<Author>>> GetAllAuthorsAsync()
         {
@@ -32,6 +35,7 @@ namespace SemikolonApi.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<Author>> GetAuthorById(int id)
         {
@@ -104,6 +108,7 @@ namespace SemikolonApi.Controllers
         /// <summary>
         /// Deletes an author by ID.
         /// </summary>
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAuthor(int id)
         {

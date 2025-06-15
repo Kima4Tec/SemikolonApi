@@ -2,11 +2,13 @@
 using Application.Interfaces.IAuthor;
 using Application.Interfaces.ICovers;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace SemikolonApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CoverController : ControllerBase
@@ -17,6 +19,7 @@ namespace SemikolonApi.Controllers
             _coverService = coverService;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<List<Cover>>> GetAllCoversAsync()
         {
@@ -24,6 +27,7 @@ namespace SemikolonApi.Controllers
             return Ok(coverList);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<Cover>> GetCoverById(int id)
         {

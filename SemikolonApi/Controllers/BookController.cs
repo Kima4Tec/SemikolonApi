@@ -2,12 +2,14 @@
 using Application.Interfaces.IArtists;
 using Application.Interfaces.IBook;
 using Application.Validation;
-using Domain.Entities;
-using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
+using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SemikolonApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class BookController : ControllerBase
@@ -23,6 +25,7 @@ namespace SemikolonApi.Controllers
             _mapper = mapper;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<List<BookDto>>> GetAllBooks()
         {
@@ -30,6 +33,7 @@ namespace SemikolonApi.Controllers
             return Ok(books);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<BookDto>> GetBookById(int id)
         {
@@ -44,7 +48,7 @@ namespace SemikolonApi.Controllers
             }
         }
 
-
+        [AllowAnonymous]
         [HttpGet("search")]
         public async Task<ActionResult<IEnumerable<BookDto>>> SearchBooks([FromQuery] string query)
         {
@@ -55,6 +59,7 @@ namespace SemikolonApi.Controllers
             return Ok(books);
         }
 
+        [AllowAnonymous]
         [HttpGet("books-without-cover")]
         public async Task<ActionResult<List<BookDto>>> GetBooksWithoutCover()
         {
@@ -70,7 +75,6 @@ namespace SemikolonApi.Controllers
             var createdBook = await _bookService.CreateBookAsync(bookDto);
             return Ok(createdBook);
         }
-
         [HttpPut("{id}")]
         public async Task<ActionResult<Book>> UpdateBook(int id, [FromBody] BookDto bookDto)
         {
