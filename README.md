@@ -54,6 +54,107 @@ classDiagram
     ArtistCover --> Cover : "1"
 ```
 
+# Domænemodel for Bogforlagsprojekt
+
+Denne domænemodel beskriver de vigtigste forretningsobjekter (entiteter) og deres relationer i systemet.
+
+---
+
+## Entiteter
+
+### Artist
+- **Beskrivelse:** En kunstner, der bidrager til bogomslag.
+- **Attributter:**
+  - `ArtistId` (int)
+  - `FirstName` (string, nullable)
+  - `LastName` (string)
+- **Relationer:**
+  - Har mange `ArtistCover` (mange-til-mange relation til `Cover` via join-entity)
+
+---
+
+### Author
+- **Beskrivelse:** En forfatter, der skriver bøger.
+- **Attributter:**
+  - `Id` (int)
+  - `FirstName` (string)
+  - `LastName` (string)
+- **Relationer:**
+  - Har mange `Books`
+
+---
+
+### Book
+- **Beskrivelse:** En bog skrevet af en forfatter og har ét omslag.
+- **Attributter:**
+  - `BookId` (int)
+  - `Title` (string)
+  - `PublishDate` (DateOnly?, nullable)
+  - `BasePrice` (double?, nullable)
+  - `AuthorId` (int)
+- **Relationer:**
+  - Har én `Author`
+  - Har ét `Cover`
+
+---
+
+### Cover
+- **Beskrivelse:** Bogomslag, som kan være digitalt eller fysisk.
+- **Attributter:**
+  - `CoverId` (int)
+  - `Title` (string)
+  - `DigitalOnly` (bool)
+  - `BookId` (int)
+- **Relationer:**
+  - Hører til én `Book`
+  - Har mange `ArtistCover` (mange-til-mange relation til `Artist`)
+
+---
+
+### ArtistCover
+- **Beskrivelse:** Join-entity der repræsenterer mange-til-mange relation mellem `Artist` og `Cover`.
+- **Attributter:**
+  - `ArtistArtistId` (int)
+  - `CoversCoverId` (int)
+- **Relationer:**
+  - Hører til én `Artist`
+  - Hører til ét `Cover`
+
+---
+
+### User
+- **Beskrivelse:** En bruger i systemet (fx admin), som kan logge ind.
+- **Attributter:**
+  - `Id` (Guid)
+  - `UserName` (string)
+  - `Password` (string, hashed)
+- **Relationer:**
+  - Ingen direkte relation til bogdata (bruges til autentificering)
+
+---
+
+## Relationer mellem entiteter
+
+- En **Author** kan have mange **Books** (1:N).
+- En **Book** har præcis én **Author** (N:1).
+- En **Book** har ét **Cover** (1:1).
+- Et **Cover** hører til én **Book** (1:1).
+- Et **Cover** kan have mange **Artists** via **ArtistCover** (mange-til-mange).
+- En **Artist** kan bidrage til mange **Covers** via **ArtistCover** (mange-til-mange).
+- **ArtistCover** forbinder mange-til-mange relationen mellem `Artist` og `Cover`.
+
+---
+
+## Overordnet model
+
+```text
+Author ---< Book >--- Cover ---< ArtistCover >--- Artist
+                           ^
+                          has
+                        User (admin/login)
+
+
+
 
 # Use Case 1: Log ind
 
