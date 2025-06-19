@@ -55,97 +55,76 @@ classDiagram
 ```
 
 
-## 🧑‍🎨 Artist
+# Use Case 1: Log ind
 
-| Felt           | Type                       |
-| -------------- | -------------------------- |
-| `ArtistId`     | `int`                      |
-| `FirstName`    | `string` *(valgfri)*       |
-| `LastName`     | `string` *(valgfri)*       |
-| `ArtistCovers` | `ICollection<ArtistCover>` |
+## Use Case-navn
+**Bruger logger ind**
 
+## Primær aktør
+**Admin-bruger**
 
-## 🎨 ArtistCover (Join-tabel)
+## Interessenter og mål
+- **Admin-bruger**: Ønsker at få adgang til administration-panelet for at redigere bøger og administrere brugere.
 
-| Felt             | Type  |
-| ---------------- | ----- |
-| `ArtistArtistId` | `int` |
-| `CoversCoverId`  | `int` |
+## Forudsætninger
+- Admin-brugeren er allerede oprettet i systemet med et GUID, krypteret og hashet adgangskode.
 
-Relationer:
+## Efterfølgende tilstand
+- Bruger modtager en JWT-token (og evt. refresh token) og får adgang til administrationssiden.
 
-Mange-til-mange mellem Artist og Cover
+## Hovedforløb
+1. Bruger navigerer til “Admin” linket på siden.
+2. Bruger indtaster brugernavn og adgangskode.
+3. Angular sender loginoplysninger til backend API.
+   - 3a. **Bruger indtaster forkert brugernavn eller adgangskode**:
+     - API returnerer fejlkode og fejlmeddelelse til Angular.
+     - Angular viser “Fejl ved login: Ugyldigt login”.
+4. Backend validerer brugernavn og hasher den indtastede adgangskode og sammenligner med databasen.
+5. Hvis oplysningerne er korrekte:
+   - API genererer JWT-token.
+6. Bruger får mulighed for at oprette og redigere bog-data.
 
-Hver post forbinder én Artist med ét Cover
+---
 
+# Use Case 2: Opret ny bruger
 
-## ✍️ Author
+## Use Case-navn
+**Admin opretter ny bruger**
 
-| Felt        | Type                |
-| ----------- | ------------------- |
-| `Id`        | `int`               |
-| `FirstName` | `string`            |
-| `LastName`  | `string`            |
-| `Books`     | `ICollection<Book>` |
+## Primær aktør
+**Admin-bruger**
 
+## Interessenter og mål
+- **Admin**: Vil kunne tilføje nye brugere, som kan logge ind og redigere indhold.
 
-## 📖 Book
+## Forudsætninger
+- Admin-bruger er logget ind.
+- Administration er tilgængelig i navbar.
 
-| Felt          | Type                    |
-| ------------- | ----------------------- |
-| `BookId`      | `int`                   |
-| `Title`       | `string`                |
-| `PublishDate` | `DateOnly`              |
-| `BasePrice`   | `double`                |
-| `AuthorId`    | `int`                   |
-| `Author`      | `Author`                |
-| `Cover`       | `Cover`                 |
+## Efterfølgende tilstand
+- En ny bruger er oprettet i databasen med GUID, hashet adgangskode og evt. tildelte rettigheder.
 
+## Hovedforløb
+1. Admin vælger “Ny bruger” i admin-navbar.
+2. Admin udfylder formular med:
+   - Brugernavn
+   - Adgangskode
+   - 2a. **Admin glemmer at udfylde et felt**:
+     - Angular viser valideringsfejl: ”Fejl ved registrering: undefined”
+3. Angular sender data til backend API.
+4. API:
+   - Validerer input
+   - Genererer unikt GUID til brugeren
+   - Hasher adgangskoden med bcrypt
+   - Gemmer brugeren i databasen
+   - 4a. **Brugernavn findes allerede i databasen**:
+     - API returnerer fejl
+     - Angular viser “Fejl ved registrering: Brugernavn er allerede taget.”
+5. API returnerer bekræftelse til Angular.
+6. Admin ser besked ”Bruger registreret!”
 
-Relationer:
+---
 
-En Book har præcis én Author (1 → mange)
-
-En Book har præcis ét Cover
-
-
-## 🧾 Cover
-
-| Felt           | Type                       |
-| -------------- | -------------------------- |
-| `CoverId`      | `int`                      |
-| `Title`        | `string` *(valgfri)*       |
-| `DigitalOnly`  | `bool`                     |
-| `BookId`       | `int`                      |
-| `Book`         | `Book`                     |
-| `ArtistCovers` | `ICollection<ArtistCover>` |
-
-
-
-# Noter
-Der kan tilføjes et felt med rabat
-
-
-<br><br><br>
-
-# APP
-
-## Bog – Indsæt ny
-
-### Påkrævede felter
-- **Titel**  
-- **Publiceringsdato**  
-- **Basispris**  
-- **ForfatterFornavn**  
-- **ForfatterEfternavn**
-- **CoverDigital?** *(true/false)*  
-
-### Valgfrie felter
-- **CoverTitel**  
-- **CoverKunstnerFornavn**  
-- **CoverKunstnerEfternavn**
-
-## Liste af alle bøger
-
-## Søgning og liste på titel eller fornavn eller årstal
+## Udvidelse
+Jeg kunne godt udvide sikkerheden med timestamps og logging af de forskellige handlinger, såsom login og oprettelse.
 
