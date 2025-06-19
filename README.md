@@ -153,7 +153,7 @@ Author ---< Book >--- Cover ---< ArtistCover >--- Artist
                           has
                         User (admin/login)
 
-
+```
 
 
 # Use Case 1: Log ind
