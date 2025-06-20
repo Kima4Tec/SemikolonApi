@@ -223,9 +223,24 @@ Author ---< Book >--- Cover ---< ArtistCover >--- Artist
      - Angular viser “Fejl ved registrering: Brugernavn er allerede taget.”
 5. API returnerer bekræftelse til Angular.
 6. Admin ser besked ”Bruger registreret!”
-
+ 
 ---
 
 ## Udvidelse
 Jeg kunne godt udvide sikkerheden med timestamps og logging af de forskellige handlinger, såsom login og oprettelse.
+
+DDD
+
+| Klasse                     | Type                             | Begrundelse                                                                                                   |
+| -------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| **Author**                 | Entity + Aggregate Root          | Har ID og ejer bøger (1\:N). `Author` er adgangsvej til `Books`.                                              |
+| **Book**                   | Entity + Evt. egen Aggregate     | Har identitet (`BookId`) og egne regler og relation til `Author`, `Cover`. Kan stå som selvstændig aggregate. |
+| **Cover**                  | Entity                           | Har ID og relation til både `Book` (1:1) og `Artists` (M\:N). Ejer relationen til `ArtistCover`.              |
+| **Artist**                 | Entity                           | Har identitet (`ArtistId`) og kan deltage i mange omslag.                                                     |
+| **ArtistCover**            | Entity (join-entity)             | Ingen egen betydning som aggregate, men identificerbar og del af `Cover`-aggregate.                           |
+| **User**                   | Entity + Aggregate Root          | Har GUID ID og ansvar for login/autentificering. Oprettes og behandles isoleret.                              |
+| *FullName*                 | Value Object                     | Hvis du laver fx `FullName` som klasse i stedet for separate felter.                                          |
+
+
+
 
