@@ -230,7 +230,7 @@ Author ---< Book >--- Cover ---< ArtistCover >--- Artist
 Jeg kunne godt udvide sikkerheden med timestamps og logging af de forskellige handlinger, såsom login og oprettelse.
 
 ---
-##DDD
+## DDD
 
 | Klasse                     | Type                             | Begrundelse                                                                                                   |
 | -------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------- |
