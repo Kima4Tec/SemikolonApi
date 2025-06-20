@@ -240,7 +240,7 @@ Jeg kunne godt udvide sikkerheden med timestamps og logging af de forskellige ha
 | **Artist**                 | Entity                           | Har identitet (`ArtistId`) og kan deltage i mange omslag.                                                     |
 | **ArtistCover**            | Entity (join-entity)             | Ingen egen betydning som aggregate, men identificerbar og del af `Cover`-aggregate.                           |
 | **User**                   | Entity + Aggregate Root          | Har GUID ID og ansvar for login/autentificering. Oprettes og behandles isoleret.                              |
-| *FullName*                 | Value Object                     | Hvis du laver fx `FullName` som klasse i stedet for separate felter.                                          |
+| *FullName*                 | Value Object                     | Hvis fx `FullName` som klasse i stedet for separate felter.                                                   |
 
 
 
