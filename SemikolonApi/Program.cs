@@ -31,7 +31,7 @@ namespace SemikolonApi
             //Preparing app to handle[Authorize] attributes on controllers or endpoints.
             builder.Services.AddAuthorization();
 
-            // Adding controller services
+            // Adding controller services and more
             builder.Services.AddControllers();
             builder.Services.AddScoped<AuthService>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
