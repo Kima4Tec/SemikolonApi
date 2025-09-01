@@ -21,7 +21,7 @@ namespace SemikolonApi.Controllers
             _configuration = configuration;
             _authService = authService;
         }
-        //[AllowAnonymous]
+
         [HttpPost("register")]
         public IActionResult Register([FromBody] User user)
         {
