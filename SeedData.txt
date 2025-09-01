@@ -1,0 +1,72 @@
+USE [SemikolonTest];
+GO
+
+-- 1. Authors
+SET IDENTITY_INSERT [dbo].[Authors] ON;
+INSERT INTO [dbo].[Authors] (Id, FirstName, LastName)
+VALUES
+    (2, 'Ernest', 'Hemingway'),
+    (3, 'Philip', 'Djian'),
+    (4, 'E. H.', 'Gombrich'),
+    (5, 'Henry', 'Miller'),
+    (6, 'Dan', 'Turell'),
+    (7, 'Ib', 'Michael'),
+    (8, 'Niels', 'Frank'),
+    (9, 'Kim', 'Massesson'),
+    (10, 'Tove', 'Ditlevsen');
+SET IDENTITY_INSERT [dbo].[Authors] OFF;
+GO
+
+-- 2. Books
+SET IDENTITY_INSERT [dbo].[Books] ON;
+INSERT INTO [dbo].[Books] (BookId, Title, PublishDate, Price, AuthorId)
+VALUES
+    (5, 'Manjana', '1998-01-01', 149, 6),
+    (6, 'Under åbne marker', '2021-01-01', 230, 7),
+    (7, 'Én vej', '2009-01-01', 125, 8),
+    (8, 'Himmelbjerget', '1998-01-01', 70, 7),
+    (9, 'Penselstrøg', '2025-01-01', 259, 9),
+    (10, 'Samlede Digte', '1998-01-01', 169, 10);
+SET IDENTITY_INSERT [dbo].[Books] OFF;
+GO
+
+-- 3. Artists
+SET IDENTITY_INSERT [dbo].[Artists] ON;
+INSERT INTO [dbo].[Artists] (ArtistId, FirstName, LastName)
+VALUES
+    (1, 'Knud', 'Odde'),
+    (2, 'Christian', 'Lemmerz'),
+    (3, 'Sylvester', 'Petersen'),
+    (4, 'Kenneth', 'Balfeldt'),
+    (5, 'Tanja', 'Nellemann Kruse'),
+    (6, 'Claus', 'Carstensen'),
+    (7, 'Ib', 'Michael'),
+    (8, 'Kim', 'Massesson'),
+    (9, 'Søren', 'Banjo');
+SET IDENTITY_INSERT [dbo].[Artists] OFF;
+GO
+
+-- 4. Covers (skal gøres efter Books er på plads)
+SET IDENTITY_INSERT [dbo].[Covers] ON;
+INSERT INTO [dbo].[Covers] (CoverId, DesignIdeas, DigitalOnly, BookId)
+VALUES
+    (5, 'Saxofon', 0, 5),
+    (6, 'Portræt af Ib Michael', 0, 6),
+    (7, 'En hvid dug', 0, 7),
+    (8, 'Sol over Gudhjem', 0, 8),
+    (9, 'Penselstrøg', 0, 9),
+    (10, 'Blå dug', 1, 10);
+SET IDENTITY_INSERT [dbo].[Covers] OFF;
+GO
+
+-- 5. ArtistCover (skal gøres efter Covers og Artists er på plads)
+INSERT INTO [dbo].[ArtistCover] (ArtistsArtistId, CoversCoverId)
+VALUES
+    (1, 5),
+    (2, 6),
+    (3, 7),
+    (1, 8),
+    (3, 8),
+    (6, 9),
+    (4, 10);
+GO
