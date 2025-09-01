@@ -70,3 +70,8 @@ VALUES
     (6, 9),
     (4, 10);
 GO
+
+-- 6. Users
+INSERT INTO [dbo].[Users] (Password)
+VALUES ('$2a$11$C.i7dSmCYizv1QaRIQK0C.AK5meOIinQmZbh4a5B7whR5e1/kpWD2');
+GO
