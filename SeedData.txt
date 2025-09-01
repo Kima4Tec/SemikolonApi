@@ -46,7 +46,7 @@ VALUES
 SET IDENTITY_INSERT [dbo].[Artists] OFF;
 GO
 
--- 4. Covers (skal gøres efter Books er på plads)
+-- 4. Covers
 SET IDENTITY_INSERT [dbo].[Covers] ON;
 INSERT INTO [dbo].[Covers] (CoverId, DesignIdeas, DigitalOnly, BookId)
 VALUES
@@ -59,7 +59,7 @@ VALUES
 SET IDENTITY_INSERT [dbo].[Covers] OFF;
 GO
 
--- 5. ArtistCover (skal gøres efter Covers og Artists er på plads)
+-- 5. ArtistCover
 INSERT INTO [dbo].[ArtistCover] (ArtistsArtistId, CoversCoverId)
 VALUES
     (1, 5),
@@ -72,6 +72,6 @@ VALUES
 GO
 
 -- 6. Users
-INSERT INTO [dbo].[Users] (Password)
-VALUES ('$2a$11$C.i7dSmCYizv1QaRIQK0C.AK5meOIinQmZbh4a5B7whR5e1/kpWD2');
+INSERT INTO [dbo].[Users] (Id, UserName, Password)
+VALUES ('F7F2365D-515D-4AC0-A231-BCD9E25A8736', 'admin', '$2a$11$r70HDXTWRadQ631oHuc0qucWCgb3HDgXcEhkbtfegvgXZ.RsdOMDq');
 GO
